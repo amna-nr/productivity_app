@@ -3,26 +3,35 @@
 {% block title %} Home {% endblock%}
 
 {% block main %}
-<div>quote for the day</div>
+<div>
+
+</div>
 
 <div id="tasks">
+  
     <div>
       <h2>To do:</h2>
-      <ul>
-        <li></li>
-      </ul>
+      <form action="/" method="post">
+        <input type="text" name="task" placeholder="New task">
+        <button type="submit">+</button>
+      </form>
     </div>
+
     <div>
       <h2>Doing:</h2>
-      <ul>
-        <li></li>
-      </ul>
+      <form action="/" method="post">
+        <input type="text" name="task" placeholder="New task">
+        <button type="submit">+</button>
+      </form>
     </div>
+
     <div>
       <h2>Done:</h2>
-      <ul>
-        <li></li>
-      </ul>
+      <form action="/" method="post">
+        <input type="text" name="task" placeholder="New task">
+        <button type="submit">+</button>
+      </form>
     </div>
+
 </div>
 {% endblock %}
