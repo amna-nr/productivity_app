@@ -2,3 +2,19 @@
   display: flex;
   justify-content: space-around;
 }
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+nav ul {
+  list-style-type: none;
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: grey;
+  padding: 16px;
+}
