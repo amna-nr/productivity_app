@@ -1,10 +1,15 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    if request.method == "GET":
+        return render_template("index.html")
+    elif request.method == "POST":
+        to_do = request.form.get("to_do")
+        doing = request.form.get("doing")
+        done = request.form.get("done")
 
 @app.route("/about")
 def about():
