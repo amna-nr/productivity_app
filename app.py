@@ -5,6 +5,12 @@ import sqlite3
 conn = sqlite3.connect("database.db")
 db = conn.cursor()
 
+db.execute("""CREATE TABLE 
+            IF NOT EXISTS users 
+           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL, 
+            password_hash TEXT NOT NULL)""")
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
