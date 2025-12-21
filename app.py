@@ -2,14 +2,28 @@ from flask import Flask, render_template, request
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 
-conn = sqlite3.connect("database.db")
-db = conn.cursor()
+conn = sqlite3.connect("database.db") # connect to the database
+db = conn.cursor() # to be able to execute SQL commands
 
+# create users table
 db.execute("""CREATE TABLE 
             IF NOT EXISTS users 
-           (id INTEGER PRIMARY KEY AUTOINCREMENT,
+            (id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL, 
             password_hash TEXT NOT NULL)""")
+
+# create tasks table
+db.execute("""CREATE TABLE 
+            IF NOT EXISTS tasks
+            (task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            task TEXT NOT NULL,
+            status TEXT NOT NULL,
+           timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id))""")
+
+conn.commit()
+conn.close()
 
 app = Flask(__name__)
 
