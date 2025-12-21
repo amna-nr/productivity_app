@@ -18,3 +18,9 @@ nav a {
   color: grey;
   padding: 16px;
 }
+
+#login_form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

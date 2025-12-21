@@ -1,4 +1,9 @@
 from flask import Flask, render_template, request
+from werkzeug.security import generate_password_hash, check_password_hash
+import sqlite3
+
+conn = sqlite3.connect("database.db")
+db = conn.cursor()
 
 app = Flask(__name__)
 
@@ -8,8 +13,16 @@ def index():
         return render_template("index.html")
     elif request.method == "POST":
         to_do = request.form.get("to_do")
-        doing = request.form.get("doing")
-        done = request.form.get("done")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
 
 @app.route("/about")
 def about():
