@@ -27,6 +27,25 @@ def index():
     elif request.method == "POST":
         to_do = request.form.get("to_do")
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "GET":
+        return render_template("register.html")
+    elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if not username or not password:
+            return "Username and password are required", 400
+        hashed_password = generate_password_hash(password, method='sha256')
+        conn = get_db()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            return "Username already exists"
+        finally:
+            conn.close()
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -34,8 +53,7 @@ def login():
         return render_template("login.html")
     elif request.method == "POST":
         username = request.form.get("username")
-        password = request.form.get("password")
-
+        password = request.form.get("password")   
 
 @app.route("/about")
 def about():
