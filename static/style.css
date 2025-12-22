@@ -19,7 +19,7 @@ nav a {
   padding: 16px;
 }
 
-#login_form {
+.login_register_forms {
   display: flex;
   flex-direction: column;
   gap: 10px;

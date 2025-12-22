@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 
@@ -22,6 +22,8 @@ def get_db():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    if session.get("user_id") is None:
+        return render_template("login.html")
     if request.method == "GET":
         return render_template("index.html")
     elif request.method == "POST":
