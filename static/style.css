@@ -20,7 +20,14 @@ nav a {
 }
 
 .login_register_forms {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
