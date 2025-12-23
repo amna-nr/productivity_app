@@ -87,14 +87,27 @@ def login():
         conn.close()
         return redirect("/")
     
-    
+
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
     if request.method == "GET":
         return render_template("index.html")
+    
     elif request.method == "POST":
-        to_do = request.form.get("to_do")
+        task = request.form.get("to_do")
+
+        if not task:
+            return "Task cannot be empty", 400
+        
+        conn = get_db()
+        cursor = conn.cursor() 
+        cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
+        conn.commit()
+        cursor.execute("SELECT task FROM tasks WHERE user_id = ?", (session["user_id"], ))
+        tasks = cursor.fetchall()
+        conn.close()
+        return render_template("index.html", tasks=tasks)
 
 @app.route("/about")
 @login_required

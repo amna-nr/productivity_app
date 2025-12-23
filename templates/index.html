@@ -12,8 +12,13 @@
     <div>
       <h2>To do:</h2>
       <form action="/" method="post">
-        <input autocomplete="off" type="text" name="to_do" placeholder="New task">
+        <input autocomplete="off" type="text" name="task" placeholder="New task">
         <button type="submit">+</button>
+        <ol>
+          {% for task in tasks %}
+            <li>{{ task[0] }}</li>
+          {% endfor %}
+        </ol>
       </form>
     </div>
 
