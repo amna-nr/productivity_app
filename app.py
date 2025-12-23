@@ -95,7 +95,8 @@ def index():
         return render_template("index.html")
     
     elif request.method == "POST":
-        task = request.form.get("to_do")
+
+        task = request.form.get("task")
 
         if not task:
             return "Task cannot be empty", 400
