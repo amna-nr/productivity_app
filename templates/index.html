@@ -31,7 +31,17 @@
 
     <div>
       <h2>Doing:</h2>
-      
+      <form action="/" method="post">
+        <ol id="doing">
+          {% for task in doing %}
+            <li>
+              <button name="btn_doing" value="{{ task[0] }}">
+                {{ task[0] }}
+              </button>
+            </li>
+          {% endfor %}
+        </ol>
+      </form>
     </div>
 
     <div>
