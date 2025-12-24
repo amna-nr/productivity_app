@@ -92,7 +92,21 @@ def login():
 @login_required
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
+        tasks = cursor.fetchall()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'doing' AND user_id = ?", (session["user_id"], ))
+        doing = cursor.fetchall()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'done' AND user_id = ?", (session["user_id"], ))
+        done = cursor.fetchall()
+
+        conn.close()
+        return render_template("index.html", tasks=tasks, doing=doing, done=done )
     
     elif request.method == "POST":
 
