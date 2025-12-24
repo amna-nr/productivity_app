@@ -46,6 +46,17 @@
 
     <div>
       <h2>Done:</h2>
+      <form action="/" method="post">
+        <ol id="done">
+          {% for task in done %}
+            <li>
+              <button name="btn_done" value="{{ task[0] }}">
+                {{ task[0] }}
+              </button>
+            </li>
+          {% endfor %}
+        </ol>
+      </form>
     </div>
 
 </div>
