@@ -103,13 +103,14 @@ def index():
         conn = get_db()
         cursor = conn.cursor() 
 
+        if task:
+            cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
+
         if to_do:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
 
-
-        cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
         conn.commit()
-
+        
         cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
         tasks = cursor.fetchall()
 
