@@ -96,19 +96,28 @@ def index():
     
     elif request.method == "POST":
 
+        # get the task the user entered
         task = request.form.get("task")
+        to_do = request.form.get("btn_to_do")
 
-        if not task:
-            return "Task cannot be empty", 400
-        
         conn = get_db()
         cursor = conn.cursor() 
+
+        if to_do:
+            cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
+
+
         cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
         conn.commit()
-        cursor.execute("SELECT task FROM tasks WHERE user_id = ?", (session["user_id"], ))
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
         tasks = cursor.fetchall()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'doing' AND user_id = ?", (session["user_id"], ))
+        doing = cursor.fetchall()
+
         conn.close()
-        return render_template("index.html", tasks=tasks)
+        return render_template("index.html", tasks=tasks, doing=doing)
 
 @app.route("/about")
 @login_required
