@@ -91,7 +91,13 @@ def login():
             session["username"] = user[1]
             conn.close()
             return redirect("/")
-    
+        
+
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    return redirect("/login")
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
