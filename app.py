@@ -20,11 +20,15 @@ def login_required(f):
 def init_db():
     conn = sqlite3.connect('database.db')
     conn.execute('''CREATE TABLE IF NOT EXISTS users
-                    (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE NOT NULL, password TEXT NOT NULL)''') 
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL)''') 
     conn.execute('''CREATE TABLE IF NOT EXISTS tasks
-                    (id INTEGER PRIMARY KEY AUTOINCREMENT, status TEXT NOT NULL,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    task TEXT NOT NULL, user_id INTEGER REFERENCES users(id))''')
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                status TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                task TEXT NOT NULL,
+                user_id INTEGER REFERENCES users(id))''')
     conn.commit()
     conn.close()
 
@@ -71,21 +75,22 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-    if not username or not password:
-        return "Username and password are required", 400
+        if not username or not password:
+            return "Username and password are required", 400
 
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, username, password FROM users WHERE username = ?", (username, ))
-    user = cursor.fetchone()
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username, password FROM users WHERE username = ?", (username, ))
+        user = cursor.fetchone()
 
-    if user is None or not check_password_hash(user[2], password):
-        return "Invalid username or password", 401
-    else:
-        session["user_id"] = user[0]
-        session["username"] = user[1]
-        conn.close()
-        return redirect("/")
+        if user is None or not check_password_hash(user[2], password):
+            return "Invalid username or password", 401 
+
+        else:
+            session["user_id"] = user[0]
+            session["username"] = user[1]
+            conn.close()
+            return redirect("/")
     
 
 @app.route("/", methods=["GET", "POST"])
@@ -114,19 +119,23 @@ def index():
         task = request.form.get("task")
         to_do = request.form.get("btn_to_do")
         doing = request.form.get("btn_doing")
+        done = request.form.get("btn_done")
 
         conn = get_db()
         cursor = conn.cursor() 
 
         if task:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
+            task_id = cursor.lastrowid
 
         elif to_do:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
-        
+            
         elif doing:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("done", doing, session["user_id"], ))
-        
+       
+        elif done:
+            cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (done, session["user_id"], "done",))
         conn.commit()
         
         cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
