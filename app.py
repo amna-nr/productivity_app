@@ -20,6 +20,7 @@ def login_required(f):
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+
     cursor.execute('''CREATE TABLE IF NOT EXISTS users
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
@@ -33,6 +34,7 @@ def init_db():
     cursor.execute('''CREATE TABLE IF NOT EXISTS quotes
                  (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                  quote TEXT NOT NULL) ''')
+    
     quotes = [
                 "Small steps every day add up to big results.",
                 "Action beats motivation.",
@@ -65,6 +67,7 @@ def init_db():
                 "Make today count.",
                 "You are building something meaningful."
             ]
+    
     for quote in quotes:
         cursor.execute("INSERT INTO quotes (quote) VALUES (?) " (quote, ))
 
@@ -155,8 +158,11 @@ def index():
         cursor.execute("SELECT task FROM tasks WHERE status = 'done' AND user_id = ?", (session["user_id"], ))
         done = cursor.fetchall()
 
+        cursor.execute("SELECT quote FROM quotes ORDER BY RANDOM() LIMIT 1")
+        quote = cursor.fetchone()
+
         conn.close()
-        return render_template("index.html", tasks=tasks, doing=doing, done=done )
+        return render_template("index.html", tasks=tasks, doing=doing, done=done, quote=quote )
     
     elif request.method == "POST":
 

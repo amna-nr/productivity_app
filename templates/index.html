@@ -1,10 +1,12 @@
 {% extends "layout.html" %}
 
-{% block title %} Home {% endblock%}
+{% block title %}
+  Homepage 
+{% endblock%}
 
 {% block main %}
-<div>
-    
+<div id="quote">
+      {{ quote }}
 </div>
 
 <div id="tasks">
@@ -26,7 +28,6 @@
             </li>
           {% endfor %}
         </ol>
-      
     </div>
 
     <div>
