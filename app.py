@@ -19,16 +19,55 @@ def login_required(f):
 
 def init_db():
     conn = sqlite3.connect('database.db')
-    conn.execute('''CREATE TABLE IF NOT EXISTS users
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL)''') 
-    conn.execute('''CREATE TABLE IF NOT EXISTS tasks
+    cursor.execute('''CREATE TABLE IF NOT EXISTS tasks
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 status TEXT NOT NULL,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                 task TEXT NOT NULL,
                 user_id INTEGER REFERENCES users(id))''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS quotes
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                 quote TEXT NOT NULL) ''')
+    quotes = [
+                "Small steps every day add up to big results.",
+                "Action beats motivation.",
+                "Done is better than perfect.",
+                "Focus on progress, not perfection.",
+                "You don't need more time, you need more focus.",
+                "Discipline is choosing what you want most over what you want now.",
+                "Start where you are. Use what you have. Do what you can.",
+                "Consistency will take you where motivation can't.",
+                "The hardest part is starting.",
+                "One task at a time.",
+                "Your future self is watching.",
+                "You are capable of more than you think.",
+                "Progress, not pressure.",
+                "Do the next right thing.",
+                "Clarity comes from action.",
+                "Little wins matter.",
+                "Momentum is built, not found.",
+                "Work with your energy, not against it.",
+                "You don't have to feel ready to begin.",
+                "Finish what you start.",
+                "Habits shape your future.",
+                "Focus creates freedom.",
+                "Effort compounds.",
+                "You're closer than you think.",
+                "Show up, even imperfectly.",
+                "Structure creates calm.",
+                "Start messy. Refine later.",
+                "Your goals deserve consistency.",
+                "Make today count.",
+                "You are building something meaningful."
+            ]
+    for quote in quotes:
+        cursor.execute("INSERT INTO quotes (quote) VALUES (?) " (quote, ))
+
     conn.commit()
     conn.close()
 
@@ -135,7 +174,6 @@ def index():
 
         if task:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
-            tasks_to_do += 1
 
         elif to_do:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
@@ -147,7 +185,6 @@ def index():
 
         elif done:
             cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (done, session["user_id"], "done",))
-            tasks_done += 1
         conn.commit()
         
         cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
