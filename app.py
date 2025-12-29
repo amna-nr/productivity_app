@@ -121,21 +121,27 @@ def index():
         doing = request.form.get("btn_doing")
         done = request.form.get("btn_done")
 
+        tasks_to_do = 0
+        tasks_done = 0
+
         conn = get_db()
         cursor = conn.cursor() 
 
         if task:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
-            task_id = cursor.lastrowid
+            tasks_to_do += 1
 
         elif to_do:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
-            
+            cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (to_do, session["user_id"], "to do",))
+
         elif doing:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("done", doing, session["user_id"], ))
-       
+            cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (doing, session["user_id"], "doing",))
+
         elif done:
             cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (done, session["user_id"], "done",))
+            tasks_done += 1
         conn.commit()
         
         cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
