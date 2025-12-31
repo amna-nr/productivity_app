@@ -228,13 +228,21 @@ def mood():
 @app.route("/report")
 @login_required
 def report():
+
     conn = get_db()
     cursor = conn.cursor()
+
     cursor.execute("SELECT COUNT(*) FROM tasks WHERE user_id = ?", (session["user_id"], ))
     total_tasks = cursor.fetchone()[0]
+
+    if total_tasks < 1:
+        return "Add tasks to see your report"
+    
     cursor.execute("SELECT COUNT(*) FROM tasks WHERE user_id = ? AND status = ?", (session["user_id"], "done", ))
     tasks_done = cursor.fetchone()[0]
+
     productivity = int((tasks_done / total_tasks) * 100)
+    
     return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done, productivity=productivity)
 
 if __name__ == '__main__':
