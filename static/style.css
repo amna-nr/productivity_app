@@ -46,3 +46,9 @@ nav a {
   align-items: centre;
   flex: 1;
 }
+
+#mood {
+  display: flex;
+  justify-content: space-around;
+}
+
