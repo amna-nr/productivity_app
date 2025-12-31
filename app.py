@@ -338,7 +338,7 @@ def mood():
 def report():
 
     points = get_points()
-    if not points > 1500:
+    if not points > 1000:
         return "Not enough points yet"
 
     conn = get_db()
