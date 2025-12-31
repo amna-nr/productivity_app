@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %} Mood based tasks {% endblock %}
+
+{% block main %}
+    <form action="/mood" method="post">
+        <input name="happy" type="submit" value="Happy">
+        <input name="focused" type="submit" value="Focused">
+        <input name="creative" type="submit" value="Creative">
+        <input name="calm" type="submit" value="Calm">
+        <input name="tired" type="submit" value="Tired">
+        <input name="stressed" type="submit" value="Stressed">     
+    </form>
+{% endblock %}

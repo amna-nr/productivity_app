@@ -220,7 +220,7 @@ def index():
 def about():
     return render_template("about.html")
 
-@app.route("/mood")
+@app.route("/mood", methods=["GET", "POST"])
 @login_required
 def mood():     
     return render_template("mood.html") 
@@ -242,7 +242,7 @@ def report():
     tasks_done = cursor.fetchone()[0]
 
     productivity = int((tasks_done / total_tasks) * 100)
-    
+
     return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done, productivity=productivity)
 
 if __name__ == '__main__':
