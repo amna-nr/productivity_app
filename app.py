@@ -234,7 +234,8 @@ def report():
     total_tasks = cursor.fetchone()[0]
     cursor.execute("SELECT COUNT(*) FROM tasks WHERE user_id = ? AND status = ?", (session["user_id"], "done", ))
     tasks_done = cursor.fetchone()[0]
-    return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done )
+    productivity = int((tasks_done / total_tasks) * 100)
+    return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done, productivity=productivity)
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
