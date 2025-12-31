@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %} Mood based task recommendation {% endblock %}
+
+{% block main %}
+    <ol>
+        {% for task in tasks %}
+        <li>
+            {{ task }}
+        </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
