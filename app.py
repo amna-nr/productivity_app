@@ -105,24 +105,13 @@ def logout():
     session.clear()
     return redirect("/login")
 
+
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    if request.method == "GET":
-        
-        conn = get_db()
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
-        tasks = cursor.fetchall()
-
-        cursor.execute("SELECT task FROM tasks WHERE status = 'doing' AND user_id = ?", (session["user_id"], ))
-        doing = cursor.fetchall()
-
-        cursor.execute("SELECT task FROM tasks WHERE status = 'done' AND user_id = ?", (session["user_id"], ))
-        done = cursor.fetchall()
-
-        quotes = [
+    conn = get_db()
+    cursor = conn.cursor()
+    quotes = [
                 "Small steps every day add up to big results.",
                 "Action beats motivation.",
                 "Done is better than perfect.",
@@ -155,12 +144,30 @@ def index():
                 "You are building something meaningful."
             ]
     
-        for quote in quotes:
-            cursor.execute("INSERT INTO quotes (quote) VALUES (?)", (quote, ))
+    for quote in quotes:
+        cursor.execute("INSERT INTO quotes (quote) VALUES (?)", (quote, ))
+
+    conn.commit()
+    conn.close()
+
+    if request.method == "GET":
+        
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
+        tasks = cursor.fetchall()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'doing' AND user_id = ?", (session["user_id"], ))
+        doing = cursor.fetchall()
+
+        cursor.execute("SELECT task FROM tasks WHERE status = 'done' AND user_id = ?", (session["user_id"], ))
+        done = cursor.fetchall()
 
         cursor.execute("SELECT quote FROM quotes ORDER BY RANDOM() LIMIT 1")
         quote = cursor.fetchone()[0]
 
+        conn.commit()
         conn.close()
         return render_template("index.html", tasks=tasks, doing=doing, done=done, quote=quote )
     
@@ -172,14 +179,12 @@ def index():
         doing = request.form.get("btn_doing")
         done = request.form.get("btn_done")
 
-        tasks_to_do = 0
-        tasks_done = 0
-
         conn = get_db()
         cursor = conn.cursor() 
 
         if task:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("to do", task, session["user_id"], ))
+
 
         elif to_do:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("doing", to_do, session["user_id"], ))
@@ -188,6 +193,7 @@ def index():
         elif doing:
             cursor.execute("INSERT INTO tasks (status, task, user_id) VALUES (?, ?, ?)", ("done", doing, session["user_id"], ))
             cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (doing, session["user_id"], "doing",))
+   
 
         elif done:
             cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (done, session["user_id"], "done",))
@@ -202,9 +208,12 @@ def index():
         cursor.execute("SELECT task FROM tasks WHERE status = 'done' AND user_id = ?", (session["user_id"], ))
         done = cursor.fetchall()
 
+        cursor.execute("SELECT quote FROM quotes ORDER BY RANDOM() LIMIT 1")
+        quote = cursor.fetchone()[0]
+
         conn.close()
 
-        return render_template("index.html", tasks=tasks, doing=doing, done=done)
+        return render_template("index.html", tasks=tasks, doing=doing, done=done, quote=quote)
 
 @app.route("/about")
 @login_required
@@ -219,7 +228,11 @@ def mood():
 @app.route("/report")
 @login_required
 def report():
-    return render_template("report.html")
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM tasks WHERE user_id = ?", (session["user_id"], ))
+    total_tasks = cursor.fetchone()[0]
+    return render_template("report.html", total_tasks=total_tasks )
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
