@@ -40,6 +40,13 @@ nav a {
   margin-bottom: 16px;
 }
 
+#reset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 #report {
   display: flex;
   flex-direction: column;
