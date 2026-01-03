@@ -85,10 +85,18 @@ def get_points():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT points FROM users WHERE id = ?", (session["user_id"], ))
-    row = cursor.fetchone()[0]
+    row = cursor.fetchone()
     if row is None:
         return 0
-    return row
+    return row[0]
+
+@app.context_processor
+def inject_points():
+    if "user_id" in session:
+        points = get_points()
+    else:
+        points = 0
+    return dict(points=points)
 
 
 @app.route("/register", methods=["GET", "POST"])
