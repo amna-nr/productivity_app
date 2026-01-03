@@ -182,6 +182,7 @@ def index():
         to_do = request.form.get("btn_to_do")
         doing = request.form.get("btn_doing")
         done = request.form.get("btn_done")
+        reset = request.form.get("reset")
 
         conn = get_db()
         cursor = conn.cursor() 
@@ -199,8 +200,8 @@ def index():
             cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (doing, session["user_id"], "doing",))
             cursor.execute("UPDATE users SET points = points + 100 WHERE id = ?", (session["user_id"], ))
 
-        elif done:
-            cursor.execute("DELETE FROM tasks WHERE task = ? AND user_id = ? AND status = ?", (done, session["user_id"], "done",))
+        elif reset == "1":
+            cursor.execute("DELETE FROM tasks WHERE user_id = ?", (session["user_id"], ))
         conn.commit()
         
         cursor.execute("SELECT task FROM tasks WHERE status = 'to do' AND user_id = ?", (session["user_id"], ))
