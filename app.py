@@ -90,6 +90,7 @@ def get_points():
         return 0
     return row[0]
 
+# chatgpt suggested context_processor
 @app.context_processor
 def inject_points():
     if "user_id" in session:
