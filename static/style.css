@@ -2,22 +2,28 @@
   display: flex;
   justify-content: space-around;
   padding: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
+
 header {
   display: flex;
   justify-content: space-between;
-  padding: 16px;
+  align-items: center;
+  padding: 12px 24px;
+  background-color: pink;
 }
+
 nav ul {
   list-style-type: none;
   display: flex;
-  gap: 15px;
+  gap: 12px;
 }
 
 nav a {
   text-decoration: none;
   color: grey;
-  padding: 16px;
+  padding: 12px 16px;
 }
 
 .login_register_forms {
@@ -34,28 +40,164 @@ nav a {
 }
 
 #quote {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 16px;
+  text-align: center;
+  font-style: italic;
+  margin: 24px 0 16px 0;
+  font-size: 1.2rem;
+  color: #f06292;
 }
 
 #reset {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 }
 
 #report {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
+  justify-content: center;
+  margin-top: 24px;
 }
 
 #mood {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
+
+
+/* all css generated from chatgpt below */
+
+#mood > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#mood button {
+  width: 150px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff8f0;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+#mood button:hover {
+  background-color: #ffe6d5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#mood p {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6e6e6e;
+  margin: 4px 0 12px 0;
+}
+
+.task{
+  display: block;
+  width: 100%;
+  text-align: left;                /* makes it look like a list item */
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;      /* subtle border */
+  background-color: #fff8f0;       /* soft card background */
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+.task:hover {
+  background-color: #ffe6d5;       /* subtle hover highlight */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+#tasks > div {
+  flex: 1;
+  min-width: 250px;            /* prevents columns from being too small */
+  background-color: #fff0f5;   /* subtle column background */
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+#quote {
+  text-align: center;
+  font-style: italic;
+  margin: 24px 0 16px 0;
+  font-size: 1.2rem;
+  color: #f06292;
+}
+
+#reset {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+#reset button:hover {
+  background-color: #e0557e;
+}
+
+#plus {
+  outline: none;           /* remove default focus */
+  border-radius: 999px;      /* rounded corners */
+  padding: 8px 16px;       /* optional, makes it comfortable to click */
+  cursor: pointer;         /* makes it clear it's clickable */
+  background-color: pink;
+}
+
+button {
+  outline: none;           /* remove default focus */
+  border-radius: 8px;      /* rounded corners */
+  padding: 8px 16px;       /* optional, makes it comfortable to click */
+  cursor: pointer;         /* makes it clear it's clickable */
+  background-color: pink;
+}
+
+input, textarea {
+  padding: 10px 12px;       /* comfortable click/tap area */
+  border: 1px solid #ccc;   /* light neutral border */
+  border-radius: 8px;        /* rounded corners to match buttons */
+  font-size: 16px;           /* readable text */
+  outline: none;             /* remove default browser outline */
+  transition: border-color 0.2s, box-shadow 0.2s;  /* smooth effects */
+}
+
+#report .card {
+  background-color: #fff8f0;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  min-width: 220px;
+}
+
+#report p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+ol li {
+  margin-bottom: 8px;
+}
+
+ol li:hover {
+  background-color: #ffe6d5;      /* soft hover highlight */
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+ol li::marker {
+  color: #f06292;                 /* optional colored number */
+}
+
+a {
+  color: #f06292;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}

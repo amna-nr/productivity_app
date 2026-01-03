@@ -7,7 +7,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-app.secret_key = os.environ.get("SECTRET_KEY", "dev_secret_key")
+app.secret_key = os.environ.get("SECRET_KEY", "dev_secret_key")
 
 def login_required(f):
     @wraps(f)
@@ -363,7 +363,7 @@ def report():
     cursor.execute("SELECT COUNT(*) FROM tasks WHERE user_id = ? AND status = ?", (session["user_id"], "done", ))
     tasks_done = cursor.fetchone()[0]
 
-    productivity = int((tasks_done / total_tasks) * 100)
+    productivity = round((tasks_done / total_tasks) * 100)
 
     return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done, productivity=productivity)
 

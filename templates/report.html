@@ -5,8 +5,10 @@
 {% block main %}
     <p> Unlocked! </p>
     <div id="report">
-        <p> Total tasks added in to do: {{ total_tasks }} </p>
-        <p> Total tasks done: {{ tasks_done }} </p>
-        <p> Productivity: {{ productivity }}% </p>
+        <div class="card">
+            <p> Total tasks added in to do: {{ total_tasks }} </p>
+            <p> Total tasks done: {{ tasks_done }} </p>
+            <p> <strong>Productivity: {{ productivity }}%</strong> </p>
+        </div>
     </div>
 {% endblock %}
