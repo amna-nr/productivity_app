@@ -17,4 +17,7 @@ Features:
 - Mood selection for tasks
 - Motivational quotes
 
+![App Screenshot](Homepage_productivity_app.png)
+
+
 
