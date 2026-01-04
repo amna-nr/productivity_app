@@ -90,6 +90,7 @@ def get_points():
     cursor = conn.cursor()
     cursor.execute("SELECT points FROM users WHERE id = ?", (session["user_id"], ))
     row = cursor.fetchone()
+    conn.close()
     if row is None:
         return 0
     return row[0]
