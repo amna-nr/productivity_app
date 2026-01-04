@@ -83,7 +83,7 @@ def init_db():
 init_db()
 
 def get_db():
-    return sqlite3.connect('database.db')
+    return sqlite3.connect('database.db', timeout=10)
 
 def get_points():
     conn = get_db()
