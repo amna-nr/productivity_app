@@ -70,8 +70,12 @@ def init_db():
                 "You are building something meaningful."
             ]
     
-    for quote in quotes:
-        cursor.execute("INSERT INTO quotes (quote) VALUES (?)", (quote, ))
+    cursor.execute("SELECT COUNT(*) FROM quotes")
+    count = cursor.fetchone()[0]
+
+    if count == 0:
+        for quote in quotes:
+            cursor.execute("INSERT INTO quotes (quote) VALUES (?)", (quote, ))
 
     conn.commit()
     conn.close()
