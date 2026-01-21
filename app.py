@@ -373,4 +373,4 @@ def report():
     return render_template("report.html", total_tasks=total_tasks, tasks_done=tasks_done, productivity=productivity)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run()
